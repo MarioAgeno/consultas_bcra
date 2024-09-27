@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados de Deudores BCRA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Resultado de la consulta del deudor</h1>
+    
+    <h2>Información del Deudor</h2>
+    <table>
+        <tr>
+            <th>Denominación</th>
+            <td>{{ data.results.denominacion }}</td>
+        </tr>
+        <tr>
+            <th>Identificación (CUIT)</th>
+            <td>{{ data.results.identificacion }}</td>
+        </tr>
+    </table>
+
+    <h2>Detalle de Deudas</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Entidad</th>
+                <th>Monto</th>
+                <th>Días de atraso</th>
+                <th>Fecha Sit. 1</th>
+                <th>Situación</th>
+                <th>Proceso Judicial</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if data.results.periodos %}
+                {% for periodo in data.results.periodos %}
+                    {% for entidad in periodo.entidades %}
+                    <tr>
+                        <td>{{ entidad.entidad }}</td>
+                        <td>{{ entidad.monto }}</td>
+                        <td>{{ entidad.diasAtrasoPago }}</td>
+                        <td>{{ entidad.fechaSit1 }}</td>
+                        <td>{{ entidad.situacion }}</td>
+                        <td>{{ "Sí" if entidad.procesoJud else "No" }}</td>
+                    </tr>
+                    {% endfor %}
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="6">No hay datos disponibles.</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</body>
+</html>

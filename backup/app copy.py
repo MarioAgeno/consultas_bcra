@@ -16,7 +16,7 @@ def redireccion_consulta():
     if consulta == 'deudores':
         return consulta_deudores(cuit)
     elif consulta == 'historica':
-        return consulta_historicas(cuit)
+        return consulta_historica(cuit)
     elif consulta == 'cheques':
         return consulta_cheques(cuit)
     else:
@@ -80,9 +80,8 @@ def consulta_cheques(cuit):
         error_data = response.json()
         return render_template('error.html', message=error_data.get('errorMessages', ["Error en el servidor"])[0])
     else:
-        error_data = response.json()
-        return render_template('error.html', message=error_data.get('errorMessages', ["Error en el servidor"])[0])
-        #return render_template('error.html', message="Error desconocido")
+        return render_template('error.html', message="Error desconocido")
 
 if __name__ == '__main__':
     app.run(debug=True)
+

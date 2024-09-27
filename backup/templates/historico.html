@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados Históricos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+        h2 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        td {
+            background-color: #fff;
+        }
+        tbody tr:hover {
+            background-color: #f5f5f5;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Información Histórica del Deudor</h2>
+        <table>
+            <tr>
+                <th>Denominación</th>
+                <td>{{ data.results.denominacion if data.results else "No disponible" }}</td>
+            </tr>
+            <tr>
+                <th>Identificación (CUIT)</th>
+                <td>{{ data.results.identificacion if data.results else "No disponible" }}</td>
+            </tr>
+        </table>
+
+        <h2>Histórico de Deudas</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Periodo</th>
+                    <th>Entidad</th>
+                    <th>Monto</th>
+                    <th>Situación</th>
+                    <th>Proceso Judicial</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if data.results.periodos %}
+                    {% for periodo in data.results.periodos %}
+                        <tr>
+                            <td rowspan="{{ periodo.entidades|length }}">{{ periodo.periodo }}</td>
+                            {% for entidad in periodo.entidades %}
+                                {% if not loop.first %}
+                                <tr>
+                                {% endif %}
+                                    <td>{{ entidad.entidad }}</td>
+                                    <td>{{ entidad.monto }}</td>
+                                    <td>{{ entidad.situacion }}</td>
+                                    <td>{{ "Sí" if entidad.procesoJud else "No" }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="5">No hay datos históricos disponibles.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
