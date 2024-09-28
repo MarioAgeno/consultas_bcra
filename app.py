@@ -39,7 +39,8 @@ def consulta_deudores(cuit):
         error_data = response.json()
         return render_template('error.html', message=error_data.get('errorMessages', ["Error en el servidor"])[0])
     else:
-        return render_template('error.html', message="Error desconocido")
+        error_data = response.json()
+        return render_template('error.html', message=error_data.get('errorMessages', ["No se encontraron datos"])[0])
 
 # Consulta Histórica
 @app.route('/consulta-historicas/<cuit>')
@@ -81,8 +82,7 @@ def consulta_cheques(cuit):
         return render_template('error.html', message=error_data.get('errorMessages', ["Error en el servidor"])[0])
     else:
         error_data = response.json()
-        return render_template('error.html', message=error_data.get('errorMessages', ["Error en el servidor"])[0])
-        #return render_template('error.html', message="Error desconocido")
+        return render_template('error.html', message=error_data.get('errorMessages', ["No se encontraron datos"])[0])
 
 if __name__ == '__main__':
     app.run(debug=True)
